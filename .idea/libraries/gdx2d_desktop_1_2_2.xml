@@ -6,6 +6,10 @@
     <JAVADOC />
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/gdx2d-helloDesktop/libs/gdx2d-desktop-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gdx2d-helloDesktop/libs/gdx2d-desktop-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gdx2d-helloDesktop/libs/gdx2d-desktop-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gdx2d-helloDesktop/libs/gdx2d-desktop-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/gdx2d-helloDesktop/libs/gdx2d-desktop-1.2.2-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -17,7 +17,7 @@ import scala.util.Random
 /**
  * Hello World demo in Scala
  *
- * @author Pierre-André Mudry (mui)
+ * @author Delalay Théo et Le Basle Zian
  * @version 1.0
  */
 object HelloWorldScala {
@@ -27,10 +27,10 @@ object HelloWorldScala {
   }
 }
 
-class HelloWorldScala extends PortableApplication {
+class HelloWorldScala extends PortableApplication(1920,1080) {
   private var imgBitmap: BitmapImage = null
   override def onInit(): Unit = {
-    setTitle("Hello World - mui 2024")
+    setTitle("talis (jeu de Delalay Théo et Le Basle Zian)")
     // Load a custom image (or from the lib "res/lib/icon64.png")
     imgBitmap = new BitmapImage("data/images/ISC_logo.png")
   }
@@ -40,7 +40,7 @@ class HelloWorldScala extends PortableApplication {
    */
   private var direction: Int = 1
   private var currentTime: Float = 0
-  final private val ANIMATION_LENGTH: Float = 2f // Animation length (in seconds)
+  final private val ANIMATION_LENGTH: Float = 1f // Animation length (in seconds)
   final private val MIN_ANGLE: Float = -20
   final private val MAX_ANGLE: Float = 20
 
@@ -75,7 +75,7 @@ class HelloWorldScala extends PortableApplication {
   override def onClick(x: Int, y: Int, button: Int): Unit = {
     super.onClick(x, y, button)
 
-    if (x < 50  & y < 50){
+    if (x < 100  & y < 100){
       randomNumber = diceFaces(dice1.faces(Random.nextInt(6)))
     }
 
@@ -91,6 +91,7 @@ class HelloWorldScala extends PortableApplication {
     val angle: Float = Interpolation.sine.apply(MIN_ANGLE, MAX_ANGLE, t)
 
     // Draw everything
+    g.drawFilledRectangle(1920/2,1080/2-200,500,100,0,Color.SKY)
 
     g.drawFilledRectangle(50, 50, 50, 50, 0, Color.BLUE)
     g.drawStringCentered(100, randomNumber.toString)
