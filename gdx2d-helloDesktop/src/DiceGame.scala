@@ -2,9 +2,12 @@ package ch.hevs.gdx2d.alea
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.desktop.PortableApplication
+import ch.hevs.gdx2d.hello.ScreenManager
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-
+import java.awt.Desktop
+import java.net.URI
 import scala.collection.immutable.HashMap
 import javax.swing.JOptionPane
 import scala.collection.mutable
@@ -52,18 +55,68 @@ class DiceGame extends PortableApplication(1920, 1080) {
     setTitle("Alea")
   }
   var diceImage : HashMap[Int,String]=HashMap[Int,String](
-    1 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d1.png"),
-    2 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d2.png"),
-    3 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d3.png"),
-    4 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d4.png"),
-    5 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d5.png"),
-    6 -> ("C:\\Users\\zianl\\Desktop\\gdx2d-1.2.3-students\\gdx2d-helloDesktop\\data\\Dice\\d6.png"),
+    1 -> ("data/Dice/d1.png"),
+    2 -> ("data/Dice/d2.png"),
+    3 -> ("data/Dice/d3.png"),
+    4 -> ("data/Dice/d4.png"),
+    5 -> ("data/Dice/d5.png"),
+    6 -> ("data/Dice/d6.png"),
   )
+  //Initialisation du screen manager
+   val screenManager : ScreenManager = new ScreenManager
+
+
+
   // === Fonction de rendu graphique appelée chaque frame ===
   override def onGraphicRender(g: GdxGraphics): Unit = {
+    if(screenManager.screen == 0){
+      if(screenManager.backgroundChosen == false){
+        screenManager.backgroundNumber = Random.nextInt(4) + 1
+        screenManager.backgroundChosen = true
+      }
+      g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, new BitmapImage(screenManager.menuScreens(screenManager.backgroundNumber)))
+      var playButton : BitmapImage = new BitmapImage("data/buttons/PlayButton.png")
+      g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, playButton )
+      if(Gdx.input.isTouched){
+        var x = Gdx.input.getX()
+        var y = Gdx.input.getY()
+        if(x > g.getScreenWidth/2 - 160 & x < g.getScreenWidth/2 + 160 & y > g.getScreenHeight/2 - 80 & y < g.getScreenHeight + 80){
+          screenManager.screen += 1
+        }
+      }
+    }
+    else if(screenManager.screen == 1){
+      if(Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.M)){
+        screenManager.escape ^= true
+      }
     g.clear(Color.FIREBRICK)
-    g.drawLine(1920/2,0,1920/2,1080,Color.BLACK)
 
+      if(screenManager.escape == true){
+        g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, new BitmapImage("data/mainMenuScreens/EscapeMenu.png"))
+        if(Gdx.input.isTouched()){
+          var x = Gdx.input.getX()
+          var y = Gdx.input.getY()
+          println(s"$x and $y")
+          if(x > g.getScreenWidth/2 - 16 & x < g.getScreenWidth/2 + 16 & y > g.getScreenHeight/2 - 8 & y < g.getScreenHeight/2 + 10){
+            Gdx.app.exit()
+          } else if (x > g.getScreenWidth/2 - 48 & x < g.getScreenWidth/2 + 48 & y < g.getScreenHeight/2 - 40 & y > g.getScreenHeight/2 - 64){
+            screenManager.escape = false
+            screenManager.screen = 0
+            //All values are reset to 0
+             dice = Array.fill(5)(Random.nextInt(6) + 1)
+             selected = Array.fill(5)(true)
+             currentRound = 1
+             currentRoll = 1
+             totalScore = 0
+            roundScores = List.empty
+            screenManager.backgroundNumber = Random.nextInt(4) + 1
+            //Thread sleep so that the play button doesn't get clicked by accident
+            Thread.sleep(200)
+          } else if(x > g.getScreenWidth/2 - 32 & x < g.getScreenWidth/2 + 32 & y > g.getScreenHeight/2 + 40 & y < g.getScreenHeight/2 + 64){
+            openUrl("https://github.com/Biebzoom008/Talis")
+          }
+        }
+      } else if(screenManager.screen == 1){
     // Informations en haut de l'écran
     g.setColor(Color.WHITE)
     g.drawStringCentered(1000, "ALEA")
@@ -93,7 +146,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
     drawButton(g, buttonX+buttonWidth/2, buttonY, buttonWidth, buttonHeight, "Relancer")
     drawButton(g, rulesButtonX+buttonWidth/2, buttonY, buttonWidth, buttonHeight, "Règles")
     val label = if (currentRound > maxRounds) "Rejouer" else "Valider"
-    drawButton(g, validateButtonX+buttonWidth/2, buttonY, buttonWidth, buttonHeight, label)
+    drawButton(g, validateButtonX+buttonWidth/2, buttonY, buttonWidth, buttonHeight, label)}
   }
 
   // === Dessine un bouton avec texte centré ===
@@ -102,6 +155,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
     g.drawRectangle(x, y, w, h, 0)
     g.setColor(Color.BLACK)
     drawCenteredText(g, x, y, label)
+  }
   }
 
   // === Texte centré autour du point donné (x, y) ===
@@ -120,13 +174,13 @@ class DiceGame extends PortableApplication(1920, 1080) {
     for (i <- dice.indices) {
       val dx = diceXStart + i * (diceSize + spacing)
       val dy = diceYStart
-      if (x >= dx-diceSize/2 && x <= dx + diceSize/2 && y >= dy-diceSize/2 && y <= dy + diceSize/2) {
+      if (x >= dx & x <= dx + diceSize & y >= dy - diceSize/2 & y <= dy + diceSize/2) {
         selected(i) = !selected(i)
       }
     }
 
     // Relancer les dés sélectionnés
-    if (x >= buttonX-buttonWidth/2 && x <= buttonX + buttonWidth/2 && y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
+    if (x >= buttonX && x <= buttonX + buttonWidth&& y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
       if (currentRoll < maxRollsPerRound) {
         rollSelectedDice()
         currentRoll += 1
@@ -134,12 +188,12 @@ class DiceGame extends PortableApplication(1920, 1080) {
     }
 
     // Affichage des règles
-    if (x >= rulesButtonX-buttonWidth/2 && x <= rulesButtonX + buttonWidth/2 && y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
+    if (x >= rulesButtonX && x <= rulesButtonX + buttonWidth && y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
       showRules()
     }
 
     // Bouton Valider ou Rejouer (même emplacement)
-    if (x >= validateButtonX-buttonWidth/2 && x <= validateButtonX + buttonWidth/2 && y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
+    if (x >= validateButtonX && x <= validateButtonX + buttonWidth && y >= buttonY-buttonHeight/2 && y <= buttonY + buttonHeight/2) {
       if (currentRound <= maxRounds) {
         scoreRound()
         if (currentRound <= maxRounds) rollAllDice()
@@ -176,6 +230,11 @@ class DiceGame extends PortableApplication(1920, 1080) {
     lastComboMessage = getCombinationName(dice)
     lastScoreMessage = s"Vous avez gagné $scoreThisRound points !"
     messageDisplayStartTime = System.currentTimeMillis()
+  }
+
+  //Fonction pour ouvrir un lien
+  def openUrl(url : String) : Unit = {
+    Desktop.getDesktop.browse(new URI(url))
   }
 
   // === Identifie le type de combinaison obtenue ===
