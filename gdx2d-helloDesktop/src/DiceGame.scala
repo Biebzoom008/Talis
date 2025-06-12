@@ -287,13 +287,13 @@ class DiceGame extends PortableApplication(1920, 1080) {
     val message =
       """|Voici les règles de Alea :
          |
-         |➔ Suite : 30 points
-         |➔ Paire : 10 points
-         |➔ Double paire : 20 points
-         |➔ Brelan : 25 points
+         |➔ Yams : 50 points
          |➔ Carré : 40 points
          |➔ Full house : 35 points
-         |➔ Yams : 50 points
+         |➔ Suite : 30 points
+         |➔ Brelan : 25 points
+         |➔ Double paire : 20 points
+         |➔ Paire : 10 points
          |
          |Bonne chance !""".stripMargin
     JOptionPane.showMessageDialog(null, message, "Règles", JOptionPane.INFORMATION_MESSAGE)
