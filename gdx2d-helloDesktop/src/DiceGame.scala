@@ -28,7 +28,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
   var dice = Array.fill(5)(Random.nextInt(6) + 1)
   var selected = Array.fill(5)(true)
   var currentRound = 1
-  var currentRoll = 1
+  var currentRoll = 0
   var totalScore = 0
   var roundScores: List[Int] = List()
 
@@ -77,11 +77,17 @@ class DiceGame extends PortableApplication(1920, 1080) {
       g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, new BitmapImage(screenManager.menuScreens(screenManager.backgroundNumber)))
       var playButton : BitmapImage = new BitmapImage("data/buttons/PlayButton.png")
       g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, playButton )
+      g.drawAlphaPicture(g.getScreenWidth/2 + 225, g.getScreenHeight/2,0,0.15f,1, new BitmapImage("data/images/GithubIcon.png"))
+      g.drawAlphaPicture(g.getScreenWidth/2, g.getScreenHeight/2 + g.getScreenHeight/4,0,2,1, new BitmapImage("data/images/GameTitle.png"))
+      g.drawSchoolLogo()
+      g.drawPicture(135, 75, new BitmapImage("data/images/ISC_logo.png"))
       if(Gdx.input.isTouched){
         var x = Gdx.input.getX()
         var y = Gdx.input.getY()
-        if(x > g.getScreenWidth/2 - 160 & x < g.getScreenWidth/2 + 160 & y > g.getScreenHeight/2 - 80 & y < g.getScreenHeight + 80){
+        if(x > g.getScreenWidth/2 - 115 & x < g.getScreenWidth/2 + 115 & y > g.getScreenHeight/2 - 80 & y < g.getScreenHeight + 80){
           screenManager.screen += 1
+        } else if (x > g.getScreenWidth/2 + 225 - 100 & x < g.getScreenWidth/2 + 225 + 100 & y > g.getScreenHeight/2 - 100 & y < g.getScreenHeight/2 + 100){
+          openUrl("https://github.com/Biebzoom008/Talis")
         }
       }
     }
@@ -96,7 +102,6 @@ class DiceGame extends PortableApplication(1920, 1080) {
         if(Gdx.input.isTouched()){
           var x = Gdx.input.getX()
           var y = Gdx.input.getY()
-          println(s"$x and $y")
           if(x > g.getScreenWidth/2 - 16 & x < g.getScreenWidth/2 + 16 & y > g.getScreenHeight/2 - 8 & y < g.getScreenHeight/2 + 10){
             Gdx.app.exit()
           } else if (x > g.getScreenWidth/2 - 48 & x < g.getScreenWidth/2 + 48 & y < g.getScreenHeight/2 - 40 & y > g.getScreenHeight/2 - 64){
@@ -106,7 +111,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
              dice = Array.fill(5)(Random.nextInt(6) + 1)
              selected = Array.fill(5)(true)
              currentRound = 1
-             currentRoll = 1
+             currentRoll = 0
              totalScore = 0
             roundScores = List.empty
             screenManager.backgroundNumber = Random.nextInt(4) + 1
@@ -121,6 +126,16 @@ class DiceGame extends PortableApplication(1920, 1080) {
     g.setColor(Color.WHITE)
     g.drawStringCentered(1000, "ALEA")
 
+        if(Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.R)){
+          dice = Array.fill(5)(Random.nextInt(6) + 1)
+          selected = Array.fill(5)(true)
+          currentRound = 1
+          currentRoll = 0
+          totalScore = 0
+          roundScores = List.empty
+        }
+
+        g.drawPicture(g.getScreenWidth/6,g.getScreenHeight/3 - 100, new BitmapImage("data/images/KeyBinds.png"))
     g.setColor(Color.GOLD)
     g.drawStringCentered(950, s"Manche : $currentRound / $maxRounds")
     g.drawStringCentered(900, s"Relance : $currentRoll / $maxRollsPerRound")
