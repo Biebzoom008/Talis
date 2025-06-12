@@ -108,12 +108,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
             screenManager.escape = false
             screenManager.screen = 0
             //All values are reset to 0
-             dice = Array.fill(5)(Random.nextInt(6) + 1)
-             selected = Array.fill(5)(true)
-             currentRound = 1
-             currentRoll = 0
-             totalScore = 0
-            roundScores = List.empty
+            resetGame()
             screenManager.backgroundNumber = Random.nextInt(4) + 1
             //Thread sleep so that the play button doesn't get clicked by accident
             Thread.sleep(200)
@@ -127,12 +122,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
     g.drawStringCentered(1000, "ALEA")
 
         if(Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.R)){
-          dice = Array.fill(5)(Random.nextInt(6) + 1)
-          selected = Array.fill(5)(true)
-          currentRound = 1
-          currentRoll = 0
-          totalScore = 0
-          roundScores = List.empty
+          resetGame()
         }
 
         g.drawPicture(g.getScreenWidth/6,g.getScreenHeight/3 - 100, new BitmapImage("data/images/KeyBinds.png"))
@@ -271,9 +261,9 @@ class DiceGame extends PortableApplication(1920, 1080) {
   // === Réinitialise tous les paramètres pour une nouvelle partie ===
   def resetGame(): Unit = {
     dice = Array.fill(5)(Random.nextInt(6) + 1)
-    selected = Array.fill(5)(false)
+    selected = Array.fill(5)(true)
     currentRound = 1
-    currentRoll = 1
+    currentRoll = 0
     totalScore = 0
     roundScores = List()
     lastComboMessage = ""
