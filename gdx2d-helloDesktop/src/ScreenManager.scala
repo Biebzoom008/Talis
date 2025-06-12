@@ -1,5 +1,3 @@
-package ch.hevs.gdx2d.hello
-
 import scala.collection.immutable.HashMap
 
 class ScreenManager {

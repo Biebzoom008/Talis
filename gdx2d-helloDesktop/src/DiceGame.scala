@@ -1,16 +1,13 @@
-package ch.hevs.gdx2d.alea
-
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.desktop.PortableApplication
-import ch.hevs.gdx2d.hello.ScreenManager
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+
 import java.awt.Desktop
 import java.net.URI
-import scala.collection.immutable.HashMap
 import javax.swing.JOptionPane
-import scala.collection.mutable
+import scala.collection.immutable.HashMap
 import scala.util.Random
 
 class DiceGame extends PortableApplication(1920, 1080) {
