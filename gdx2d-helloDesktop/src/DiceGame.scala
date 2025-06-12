@@ -92,7 +92,7 @@ class DiceGame extends PortableApplication(1920, 1080) {
       if(Gdx.input.isKeyJustPressed(com.badlogic.gdx.Input.Keys.M)){
         screenManager.escape ^= true
       }
-    g.clear(Color.FIREBRICK)
+    g.clear(Color.ROYAL)
 
       if(screenManager.escape == true){
         g.drawPicture(g.getScreenWidth/2, g.getScreenHeight/2, new BitmapImage("data/mainMenuScreens/EscapeMenu.png"))
